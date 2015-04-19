@@ -1,0 +1,101 @@
+﻿html {
+    background-color: #808080;
+}
+
+#wrapper {
+    width: 1442px;
+    height: 753px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url(../image/backgroundPS.gif);
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    border: 3px solid #98c335;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+
+/*Header*/
+#header {
+    height: 15%;
+    width: 100%;
+    background-color: rgba(59, 59, 59, 0.7);
+    border-bottom: 10px solid #98c335;
+    vertical-align: bottom;
+}
+
+.logo {
+    width: 27%;
+    height: auto;
+    margin-left: 1%;
+    margin-bottom: 1px;
+}
+
+
+#menu {
+    width: 20%;
+    vertical-align: top;
+}
+
+
+
+    #menu ul {
+        list-style: none;
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 0px;
+        margin-top: 0px;
+        border-left: 2px solid #98c335;
+        border-right: 2px solid #98c335;
+        border-top: 2px solid #98c335;
+        padding-left: 0;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+        #menu ul li {
+            border-bottom: 2px solid #98c335;
+            color: red;
+        }
+
+.menueItem {
+    /*Corrige la taille de la box*/
+    display: block;
+    text-decoration: none;
+    color: #98c335;
+    background-color: rgba(59, 59, 59, 0.50);
+    padding: 30px;
+}
+
+    .menueItem:hover {
+        background-color: rgba(152, 195, 53, 0.50);
+        color: #000000;
+    }
+
+.onPage {
+    background-color: rgba(152, 195, 53, 0.50);
+    color: #000000;
+    padding: 30px;
+    display: block;
+    text-decoration: none;
+}
+
+
+
+#content {
+}
+
+#footer {
+    height: 5%;
+    background-color: rgba(59, 59, 59, 0.7);
+    text-align: center;
+}
+
+    #footer p {
+        color: #98c335;
+        font-size: 80%;
+    }
+
+.hiden {
+    opacity: 0.0;
+}
