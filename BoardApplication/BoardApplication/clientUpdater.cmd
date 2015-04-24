@@ -1,0 +1,1 @@
+﻿"%ProgramFiles(x86)%\Microsoft .NET Micro Framework\v4.1\Tools\MFSvcUtil.exe" http://192.168.1.111:8733/domotic?wsdl /d:.\ /o:DomoticClient
