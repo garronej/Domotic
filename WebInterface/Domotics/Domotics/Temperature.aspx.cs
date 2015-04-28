@@ -37,6 +37,14 @@ namespace Domotics
             }
             else
             {
+
+                
+
+
+
+
+
+
                 Label1.Text = result.Rows[0]["time"].ToString() + " : " + ((Double)result.Rows[0]["value"]).ToString() + "C°";
 
                 Double s = 0;
