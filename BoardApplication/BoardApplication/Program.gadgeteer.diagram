@@ -102,7 +102,7 @@
         </socketUseShape>
       </nestedChildShapes>
     </moduleShape>
-    <socketConnector Id="f2eec92e-750e-4983-8fe4-2189d0b23231" edgePoints="[(4.07641732150427 : 6.145); (4.06083333333333 : 6.145 : JumpStart); (3.76166666666667 : 6.145 : JumpEnd); (3.285 : 6.145); (3.285 : 4.93358267849573)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <socketConnector Id="f2eec92e-750e-4983-8fe4-2189d0b23231" edgePoints="[(4.07641732150427 : 6.145); (3.285 : 6.145); (3.285 : 4.93358267849573)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <socketUseReferencesSocketMoniker Id="885602af-a8ea-43b9-bfd9-9d43709cb960" />
       <nodes>
         <socketUseShapeMoniker Id="49f8138d-e46a-4ca2-bd07-5cc9502ad99f" />
@@ -128,6 +128,22 @@
       <nodes>
         <socketUseShapeMoniker Id="1aa67dac-35b0-4a71-aa62-1b485ef95cde" />
         <socketShapeMoniker Id="e7b62af5-d80e-40ee-b5d3-0bf14ddb013f" />
+      </nodes>
+    </socketConnector>
+    <moduleShape Id="b58df8f7-98a7-4160-b97e-ef653276e017" absoluteBounds="0.68, 4.18, 0.6692913385826772, 0.86614173228346458">
+      <moduleMoniker Id="45e62078-bc0a-4185-8682-c24b2d267e01" />
+      <relativeChildShapes />
+      <nestedChildShapes>
+        <socketUseShape Id="c8e3283d-844c-4b54-b1d2-864140105aa5" absoluteBounds="0.8600000000000001, 4.74, 0.25, 0.25">
+          <socketUseMoniker Id="858eca0c-e50a-4e45-8dae-516dc7b14740" />
+        </socketUseShape>
+      </nestedChildShapes>
+    </moduleShape>
+    <socketConnector Id="f112b211-72b0-4325-bc00-05d59dd655ce" edgePoints="[(1.22122047598862 : 4.865); (2.91 : 4.865); (2.91 : 4.68); (3.34 : 4.68); (3.34 : 4.47); (3.465 : 4.47); (3.465 : 4.54122047598862)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <socketUseReferencesSocketMoniker Id="f4833da7-1364-4d4d-b511-0e894479f1ef" />
+      <nodes>
+        <socketUseShapeMoniker Id="c8e3283d-844c-4b54-b1d2-864140105aa5" />
+        <socketShapeMoniker Id="f4f21c1a-ee93-4af6-9284-e1a9af1b0761" />
       </nodes>
     </socketConnector>
   </nestedChildShapes>

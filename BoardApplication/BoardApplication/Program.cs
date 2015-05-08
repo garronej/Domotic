@@ -13,16 +13,19 @@ using GT = Gadgeteer;
 using GTM = Gadgeteer.Modules;
 using Gadgeteer.Modules.GHIElectronics;
 
-using tempuri.org;
 using Ws.Services;
 using Ws.Services.Binding;
+using it.polito.Gadgeteer;
 
 namespace BoardApplication
 {
     public partial class Program
     {
-        private bool networkUp = false;
-        ThreadSafeQueue queue = new ThreadSafeQueue(100);
+        private static string hostRunningWCFService = "192.168.1.111:8733";
+        private static string boardIpAddress = "192.168.1.202";
+
+
+        private ThreadSafeQueue queue = new ThreadSafeQueue(100);
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
@@ -41,20 +44,27 @@ namespace BoardApplication
 
             Thread t = new Thread(sendDataToServer);
             t.Start();
-            GT.Timer timer = new GT.Timer(10000);
-            timer.Tick += temperature_Getter;
-            timer.Start();
-
+            
+            
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             Debug.Print("Program Started");
 
+
+            ///////// TEST /////////
+            TemperatureSensor ts = new TemperatureSensor(6);
+            ts.MeasurementComplete += ts_MeasurementComplete;
+            ts.RequestMeasurement();
+
+
+            //////// END TEST /////////
             ethernetJ11D.UseThisNetworkInterface();
 
             //ethernetJ11D.DebugPrintEnabled = true ;
             //ethernetJ11D.UseDHCP();
-            ethernetJ11D.UseStaticIP("192.168.1.202", "255.255.255.0", "192.168.1.1");
+            ethernetJ11D.UseStaticIP(boardIpAddress, "255.255.255.0", "192.168.1.1");
             ethernetJ11D.NetworkUp += ethernetJ11D_NetworkUp;
             ethernetJ11D.NetworkDown += ethernetJ11D_NetworkDown;
+            
             /*while (true) {
                 Mainboard.SetDebugLED(true);
                 Thread.Sleep(1000);
@@ -64,37 +74,51 @@ namespace BoardApplication
             
         }
 
+        void ts_MeasurementComplete(TemperatureSensor sender, double temperature, double relativeHumidity)
+        {
+            Debug.Print("my temperature is "+temperature);
+        }
+
         void ethernetJ11D_NetworkDown(GTM.Module.NetworkModule sender, GTM.Module.NetworkModule.NetworkState state)
         {
-            networkUp = false;
+            ws.Close();
             Debug.Print("network is down");
         }
 
         void ethernetJ11D_NetworkUp(GTM.Module.NetworkModule sender, GTM.Module.NetworkModule.NetworkState state)
         {
+            //Debug.Print("I'm trying to check the address.");
+            while (!ethernetJ11D.NetworkInterface.NetworkIsAvailable) {
+                Thread.Sleep(1000);
+                //Debug.Print("it is " + ethernetJ11D.NetworkInterface.IPAddress);
+            }
+            //Debug.Print("The ip address is set.");
             //throw new NotImplementedException();
+            GT.Timer timer = new GT.Timer(10000);
+            timer.Tick += temperature_Getter;
+            timer.Start();
+#if DEBUG
             Debug.Print("The network is up.");
             Debug.Print("IP Address: " + sender.NetworkSettings.IPAddress);
-            networkUp = true;
+#endif
+            
+            ws = new WebService(boardIpAddress, 80, this);
         }
 
 
         void sendDataToServer() {
             object item;
-            while (!ethernetJ11D.IsNetworkUp)
-            {
-                Thread.Sleep(500);
-            }
+
             while (queue.pull(out item)) {
                 InfoToHost info = (InfoToHost)item;
-                Debug.Print("Sending to the server "+info);
+#if DEBUG
+                Debug.Print("Sending to the server " + info);
+#endif
+                
                 
                 try
                 {
-                    
-                    string hostRunningWCFService = "192.168.1.111:8733";
-                    
-                    // NOTE: the endpoint needs to match the endpoint of the servicehost
+                   
                     string address = "http://" + hostRunningWCFService + "/domotic/insert/"+info.DataType;
 
                     POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
@@ -103,8 +127,9 @@ namespace BoardApplication
                         HttpHelper.CreateHttpPostRequest(address, content, "text/json");
                     req.AddHeaderField("Content-Type","text/json");
                     req.ResponseReceived += req_ResponseReceived;
-                    Debug.Print("Sending request to " + req.URL);
-                    req.SendRequest();
+
+                    //Debug.Print("Sending request to " + req.URL);
+                    //req.SendRequest();
 
 
                 }
@@ -126,15 +151,28 @@ namespace BoardApplication
         void temperature_Getter(GT.Timer timer)
         {
             //get the temperature
-            Debug.Print("Timer tick");
-            double temp = 10;
+            //Debug.Print("Timer tick");
+            double temp = lightSense.ReadVoltage();
+            temp = temp * 100 - 273;
+            Debug.Print("Temperture is : " + temp);
             InfoToHost info = new InfoToHost();
             info.DataType = "temperature";
             info.Value = temp;
-            queue.push(info);
+            //queue.push(info);
+#if DEBUG
             Debug.Print("Put a temperature");
+#endif
             //throw new NotImplementedException();
         }
 
+        public void turnOnLight() {
+            Mainboard.SetDebugLED(true);
+        }
+        public void turnOffLight() {
+            Mainboard.SetDebugLED(false);
+        }
+
+
+        private WebService ws { get; set; }
     }
 }
