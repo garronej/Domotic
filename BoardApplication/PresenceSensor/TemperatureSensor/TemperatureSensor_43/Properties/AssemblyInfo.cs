@@ -2,11 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("GTM.polito.PresenceSensor")]
-[assembly: AssemblyDescription("Driver for PresenceSensor module made by Polito for Microsoft .NET Gadgeteer")]
+[assembly: AssemblyTitle("GTM.Polito.TemperatureSensor")]
+[assembly: AssemblyDescription("Driver for TemperatureSensor module made by Polito for Microsoft .NET Gadgeteer")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Polito")]
-[assembly: AssemblyProduct("PresenceSensor")]
+[assembly: AssemblyProduct("TemperatureSensor")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

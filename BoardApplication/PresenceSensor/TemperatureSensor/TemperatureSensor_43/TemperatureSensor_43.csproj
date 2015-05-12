@@ -6,12 +6,12 @@
     <!--VS2010 product version-->
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{111D0C93-EAC8-4591-8E2F-352A359F86D4}</ProjectGuid>
+    <ProjectGuid>{031108F7-7EEE-4E7E-8A32-842D496D41A7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gadgeteer.Modules.polito</RootNamespace>
-    <AssemblyName>GTM.polito.PresenceSensor</AssemblyName>
-    <TargetFrameworkVersion>v4.1</TargetFrameworkVersion>
+    <RootNamespace>Gadgeteer.Modules.Polito</RootNamespace>
+    <AssemblyName>GTM.Polito.TemperatureSensor</AssemblyName>
+    <TargetFrameworkVersion>v4.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <!--Identify this as a MicroFramework, CSharp project-->
     <ProjectTypeGuids>{b69e3092-b931-443c-abe7-7e7b65f2a37f};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -29,7 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\GTM.polito.PresenceSensor.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\GTM.Polito.TemperatureSensor.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,12 +38,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\GTM.polito.PresenceSensor.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\GTM.Polito.TemperatureSensor.XML</DocumentationFile>
   </PropertyGroup>
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PresenceSensor_41.cs" />
+    <Compile Include="TemperatureSensor_43.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Gadgeteer">

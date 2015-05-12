@@ -40,10 +40,7 @@
   <!-- Everything below here is custom to .NET MF / Gadgeteer template-->
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
-    <Compile Include="BinaryResponseTemplate.cs" />
-    <Compile Include="Body.cs" />
     <Compile Include="InfoToHost.cs" />
-    <Compile Include="PresenceSensor.cs" />
     <Compile Include="Program.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -56,12 +53,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Responder.cs" />
-    <Compile Include="TemperatureHumidity.cs" />
     <Compile Include="ThreadSafeQueue.cs" />
-    <Compile Include="WebEvent.cs" />
-    <Compile Include="WebServer.cs" />
-    <Compile Include="WebServerManager.cs" />
     <Compile Include="WebService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -122,5 +114,19 @@
     </None>
     <None Include="Resources\NinaB.tinyfnt" />
     <None Include="Resources\small.tinyfnt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PresenceSensor\PresenceSensor\PresenceSensor_43\PresenceSensor_43.csproj">
+      <Project>{B17C524E-BB02-4859-8C72-D706E9217514}</Project>
+      <Name>PresenceSensor_43</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PresenceSensor\TemperatureSensor\TemperatureSensor_43\TemperatureSensor_43.csproj">
+      <Project>{031108F7-7EEE-4E7E-8A32-842D496D41A7}</Project>
+      <Name>TemperatureSensor_43</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PresenceSensor\WebServer\WebServer_43\WebServer_43.csproj">
+      <Project>{A885E290-3B13-4798-9A2E-FBB3E7704744}</Project>
+      <Name>WebServer_43</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

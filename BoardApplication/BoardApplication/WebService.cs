@@ -19,10 +19,14 @@ namespace BoardApplication
         private Thread t;
         private Program board;
         private bool closed;
-        public WebService(string ipAddress, int p, Program program) {
+        private EthernetJ11D ethernetJ11D;
+
+        public WebService(string ipAddress, int p, Program program, EthernetJ11D ethernetJ11D)
+        {
             this.ip = ipAddress;
             this.port = p;
             this.board = program;
+            this.ethernetJ11D = ethernetJ11D;
             closed = false;
             t = new Thread(StartWebService);
             t.Start();
@@ -30,9 +34,14 @@ namespace BoardApplication
             
         }
 
+        
+
         private void StartWebService()
         {
-
+            while (!this.ethernetJ11D.NetworkInterface.NetworkIsAvailable)
+            {
+                Thread.Sleep(1000);
+            }
             WebServer.StartLocalServer(ip, port);
             //WebServer.DefaultEvent += webEvent_dispatcher;
             WebServer.DefaultEvent.WebEventReceived += webEvent_dispatcher;

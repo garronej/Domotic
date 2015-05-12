@@ -6,7 +6,7 @@
     <!--VS2010 product version-->
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>d12c0786-8c53-4a14-8f14-4841747170b7</ProjectGuid>
+    <ProjectGuid>{A885E290-3B13-4798-9A2E-FBB3E7704744}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Gadgeteer.Modules.Polito</RootNamespace>
@@ -42,7 +42,12 @@
   </PropertyGroup>
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
+    <Compile Include="BinaryResponseTemplate.cs" />
+    <Compile Include="Body.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responder.cs" />
+    <Compile Include="WebEvent.cs" />
+    <Compile Include="WebServerManager.cs" />
     <Compile Include="WebServer_43.cs" />
   </ItemGroup>
   <ItemGroup>

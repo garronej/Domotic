@@ -15,7 +15,8 @@ using Gadgeteer.Modules.GHIElectronics;
 
 using Ws.Services;
 using Ws.Services.Binding;
-using it.polito.Gadgeteer;
+using Gadgeteer.Modules.Polito;
+
 
 namespace BoardApplication
 {
@@ -23,8 +24,8 @@ namespace BoardApplication
     {
         private static string hostRunningWCFService = "192.168.1.111:8733";
         private static string boardIpAddress = "192.168.1.202";
-
-
+        private TemperatureSensor temperatureSensor = new TemperatureSensor(6);
+        private WebService ws;
         private ThreadSafeQueue queue = new ThreadSafeQueue(100);
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -41,74 +42,75 @@ namespace BoardApplication
                 timer.Tick +=<tab><tab>
                 timer.Start();
             *******************************************************************************************/
-
-            Thread t = new Thread(sendDataToServer);
-            t.Start();
+            
             
             
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
-            Debug.Print("Program Started");
+            //Debug.Print("Program Started");
 
+            //starting the timer for the remperature sensor
+            temperatureSensor.MeasurementComplete += ts_MeasurementComplete;
+            GT.Timer timer = new GT.Timer(60000); // every second (1000ms)
+            timer.Tick += temperature_timer_Tick;
+            timer.Start();
 
-            ///////// TEST /////////
-            TemperatureSensor ts = new TemperatureSensor(6);
-            ts.MeasurementComplete += ts_MeasurementComplete;
-            ts.RequestMeasurement();
-
-
-            //////// END TEST /////////
+            //setting up the ethernet interface
             ethernetJ11D.UseThisNetworkInterface();
-
-            //ethernetJ11D.DebugPrintEnabled = true ;
-            //ethernetJ11D.UseDHCP();
             ethernetJ11D.UseStaticIP(boardIpAddress, "255.255.255.0", "192.168.1.1");
             ethernetJ11D.NetworkUp += ethernetJ11D_NetworkUp;
             ethernetJ11D.NetworkDown += ethernetJ11D_NetworkDown;
-            
-            /*while (true) {
-                Mainboard.SetDebugLED(true);
-                Thread.Sleep(1000);
-                Mainboard.SetDebugLED(false);
-                Thread.Sleep(1000);
-            }*/
-            
+
+            //starting thread to send data to the server
+            Thread t = new Thread(sendDataToServer);
+            t.Start();
         }
 
-        void ts_MeasurementComplete(TemperatureSensor sender, double temperature, double relativeHumidity)
+
+
+        void temperature_timer_Tick(GT.Timer timer)
         {
-            Debug.Print("my temperature is "+temperature);
+            temperatureSensor.RequestMeasurement();
+        }
+
+        void ts_MeasurementComplete(TemperatureSensor sender, double temperature)
+        {
+            InfoToHost info = new InfoToHost();
+            info.DataType = "temperature";
+            info.Value = temperature;
+            queue.push(info);
+#if DEBUG
+            Debug.Print("got temperature: " + info.Value);
+#endif
+            //throw new NotImplementedException();
         }
 
         void ethernetJ11D_NetworkDown(GTM.Module.NetworkModule sender, GTM.Module.NetworkModule.NetworkState state)
         {
-            ws.Close();
+            if(ws!=null)
+                ws.Close();
+#if DEBUG
             Debug.Print("network is down");
+#endif
         }
 
         void ethernetJ11D_NetworkUp(GTM.Module.NetworkModule sender, GTM.Module.NetworkModule.NetworkState state)
         {
-            //Debug.Print("I'm trying to check the address.");
-            while (!ethernetJ11D.NetworkInterface.NetworkIsAvailable) {
-                Thread.Sleep(1000);
-                //Debug.Print("it is " + ethernetJ11D.NetworkInterface.IPAddress);
-            }
-            //Debug.Print("The ip address is set.");
-            //throw new NotImplementedException();
-            GT.Timer timer = new GT.Timer(10000);
-            timer.Tick += temperature_Getter;
-            timer.Start();
+            
 #if DEBUG
             Debug.Print("The network is up.");
             Debug.Print("IP Address: " + sender.NetworkSettings.IPAddress);
 #endif
-            
-            ws = new WebService(boardIpAddress, 80, this);
+            //starting the web service
+            ws = new WebService(boardIpAddress, 80, this, this.ethernetJ11D);
         }
 
 
         void sendDataToServer() {
             object item;
-
+            while (!this.ethernetJ11D.NetworkInterface.NetworkIsAvailable)
+            {
+                Thread.Sleep(1000);
+            }
             while (queue.pull(out item)) {
                 InfoToHost info = (InfoToHost)item;
 #if DEBUG
@@ -127,9 +129,10 @@ namespace BoardApplication
                         HttpHelper.CreateHttpPostRequest(address, content, "text/json");
                     req.AddHeaderField("Content-Type","text/json");
                     req.ResponseReceived += req_ResponseReceived;
-
-                    //Debug.Print("Sending request to " + req.URL);
-                    //req.SendRequest();
+#if DEBUG
+                    Debug.Print("Sending request to " + req.URL);
+#endif
+                    req.SendRequest();
 
 
                 }
@@ -148,19 +151,17 @@ namespace BoardApplication
         }
 
 
-        void temperature_Getter(GT.Timer timer)
+        void light_Getter(GT.Timer timer)
         {
-            //get the temperature
+            //get the light
             //Debug.Print("Timer tick");
-            double temp = lightSense.ReadVoltage();
-            temp = temp * 100 - 273;
-            Debug.Print("Temperture is : " + temp);
+            //Debug.Print("Light is : " + temp);
             InfoToHost info = new InfoToHost();
-            info.DataType = "temperature";
-            info.Value = temp;
-            //queue.push(info);
+            info.DataType = "light";
+            info.Value = lightSense.ReadVoltage();
+            queue.push(info);
 #if DEBUG
-            Debug.Print("Put a temperature");
+            Debug.Print("got light: "+info.Value);
 #endif
             //throw new NotImplementedException();
         }
@@ -173,6 +174,6 @@ namespace BoardApplication
         }
 
 
-        private WebService ws { get; set; }
+        
     }
 }
