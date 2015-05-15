@@ -1,6 +1,5 @@
 using System;
 using Microsoft.SPOT;
-using Gadgeteer.Networking;
 using GT = Gadgeteer;
 using GTM = Gadgeteer.Modules;
 using Gadgeteer.Modules.GHIElectronics;

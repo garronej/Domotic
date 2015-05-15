@@ -25,6 +25,7 @@ namespace BoardApplication
         private static string hostRunningWCFService = "192.168.1.111:8733";
         private static string boardIpAddress = "192.168.1.202";
         private TemperatureSensor temperatureSensor = new TemperatureSensor(6);
+        private PresenceSensor presenceSensor = new PresenceSensor(5);
         private WebService ws;
         private ThreadSafeQueue queue = new ThreadSafeQueue(100);
         // This method is run when the mainboard is powered up or reset.   
@@ -42,15 +43,15 @@ namespace BoardApplication
                 timer.Tick +=<tab><tab>
                 timer.Start();
             *******************************************************************************************/
-            
-            
+
+            presenceSensor.SomeoneDetected += presenceSensor_SomeoneDetected;
             
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             //Debug.Print("Program Started");
 
             //starting the timer for the remperature sensor
             temperatureSensor.MeasurementComplete += ts_MeasurementComplete;
-            GT.Timer timer = new GT.Timer(60000); // every second (1000ms)
+            GT.Timer timer = new GT.Timer(10000); // every second (1000ms)
             timer.Tick += temperature_timer_Tick;
             timer.Start();
 
@@ -63,6 +64,14 @@ namespace BoardApplication
             //starting thread to send data to the server
             Thread t = new Thread(sendDataToServer);
             t.Start();
+        }
+
+        void presenceSensor_SomeoneDetected(PresenceSensor sender, bool presence)
+        {
+
+            Debug.Print("Presence : " + (presence ? "yes" : "no"));
+            
+
         }
 
 
@@ -151,13 +160,13 @@ namespace BoardApplication
         }
 
 
-        void light_Getter(GT.Timer timer)
+        void luminosity_Getter(GT.Timer timer)
         {
             //get the light
             //Debug.Print("Timer tick");
             //Debug.Print("Light is : " + temp);
             InfoToHost info = new InfoToHost();
-            info.DataType = "light";
+            info.DataType = "luminosity";
             info.Value = lightSense.ReadVoltage();
             queue.push(info);
 #if DEBUG
@@ -167,9 +176,15 @@ namespace BoardApplication
         }
 
         public void turnOnLight() {
+            InfoToHost info = new InfoToHost();
+            info.DataType = "light";
+            info.Value = 1.0;
             Mainboard.SetDebugLED(true);
         }
         public void turnOffLight() {
+            InfoToHost info = new InfoToHost();
+            info.DataType = "light";
+            info.Value = 0.0;
             Mainboard.SetDebugLED(false);
         }
 
