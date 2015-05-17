@@ -66,7 +66,7 @@
                                      <span style="display:inline-block; vertical-align:middle">
                                         <asp:Label ID="Label2" runat="server" Text="30" Font-Bold="true" />
                                      </span>
-                                 </p>
+                                  C°</p>
                             </li>
 
 
