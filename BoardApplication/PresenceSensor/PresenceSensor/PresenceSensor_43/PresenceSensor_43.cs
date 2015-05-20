@@ -14,6 +14,7 @@ namespace Gadgeteer.Modules.Polito
     public class PresenceSensor : GTM.Module
     {
         private bool presence = false;
+        private Thread t;
         private DateTime _lastTime;
         private DateTime lastTime{ 
             get { 
@@ -41,11 +42,12 @@ namespace Gadgeteer.Modules.Polito
 
             // These calls will throw GT.Socket.InvalidSocketException if a pin conflict or error is encountered
             this.input = GTI.InterruptInputFactory.Create(socket, GT.Socket.Pin.Three, GTI.GlitchFilterMode.On, GTI.ResistorMode.PullUp, GTI.InterruptMode.RisingEdge, this);
-            this.input.Interrupt += (this._input_Interrupt);
+            //this.input.Interrupt += (this._input_Interrupt);
             this.led = GTI.DigitalOutputFactory.Create(socket, GT.Socket.Pin.Four, false, this);
 
             LEDMode = LEDModes.Off;
-            new Thread(monitoringLastTime).Start();
+            t = new Thread(monitoringLastTime);
+            t.Start();
         }
 
         private void _input_Interrupt(GTI.InterruptInput input, bool value)
@@ -220,7 +222,7 @@ namespace Gadgeteer.Modules.Polito
         {
             if (this.onSomeoneDetected == null)
             {
-                this.onSomeoneDetected = new PresenceSensorEventHandler(this.OnPresenceEvent);
+                this.onSomeoneDetected = new PresenceSensorEventHandler(OnPresenceEvent);
             }
             if (Program.CheckAndInvoke(SomeoneDetected, onSomeoneDetected, sender, pres)) {
                 this.SomeoneDetected(sender, pres);
@@ -231,9 +233,14 @@ namespace Gadgeteer.Modules.Polito
 
         private void monitoringLastTime() {
             TimeSpan tenSecs = new TimeSpan(0, 0, 10);
+            Thread.Sleep(7000);
             while (true) {
 
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
+                if (input.Read()) {
+
+                    lastTime = System.DateTime.Now;
+                }
                 if (presence)
                 {
                     

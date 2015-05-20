@@ -51,7 +51,7 @@ namespace BoardApplication
 
             //starting the timer for the remperature sensor
             temperatureSensor.MeasurementComplete += ts_MeasurementComplete;
-            GT.Timer timer = new GT.Timer(10000); // every second (1000ms)
+            GT.Timer timer = new GT.Timer(60000); // every second (1000ms)
             timer.Tick += temperature_timer_Tick;
             timer.Start();
 
@@ -61,6 +61,11 @@ namespace BoardApplication
             ethernetJ11D.NetworkUp += ethernetJ11D_NetworkUp;
             ethernetJ11D.NetworkDown += ethernetJ11D_NetworkDown;
 
+
+            GT.Timer timer1 = new GT.Timer(60000); // every second (1000ms)
+            timer1.Tick += luminosity_Getter;
+            timer1.Start();
+
             //starting thread to send data to the server
             Thread t = new Thread(sendDataToServer);
             t.Start();
@@ -68,9 +73,13 @@ namespace BoardApplication
 
         void presenceSensor_SomeoneDetected(PresenceSensor sender, bool presence)
         {
-
+            InfoToHost info = new InfoToHost();
+            info.DataType = "presence";
+            info.Value = presence?1.0:0.0;
+            queue.push(info);
+#if DEBUG
             Debug.Print("Presence : " + (presence ? "yes" : "no"));
-            
+#endif      
 
         }
 
@@ -169,6 +178,9 @@ namespace BoardApplication
             info.DataType = "luminosity";
             info.Value = lightSense.ReadVoltage();
             queue.push(info);
+
+            
+
 #if DEBUG
             Debug.Print("got light: "+info.Value);
 #endif
@@ -179,13 +191,17 @@ namespace BoardApplication
             InfoToHost info = new InfoToHost();
             info.DataType = "light";
             info.Value = 1.0;
-            Mainboard.SetDebugLED(true);
+            queue.push(info);
+            //Mainboard.SetDebugLED(true);
+            relayX1.TurnOn();
         }
         public void turnOffLight() {
             InfoToHost info = new InfoToHost();
             info.DataType = "light";
             info.Value = 0.0;
-            Mainboard.SetDebugLED(false);
+            queue.push(info);
+            //Mainboard.SetDebugLED(false);
+            relayX1.TurnOff();
         }
 
 
