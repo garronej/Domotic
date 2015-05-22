@@ -27,6 +27,7 @@ namespace BoardApplication
         private TemperatureSensor temperatureSensor = new TemperatureSensor(6);
         private PresenceSensor presenceSensor = new PresenceSensor(5);
         private WebService ws;
+        private BoardStatus status;
         private ThreadSafeQueue queue = new ThreadSafeQueue(100);
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -43,7 +44,7 @@ namespace BoardApplication
                 timer.Tick +=<tab><tab>
                 timer.Start();
             *******************************************************************************************/
-
+            status = new BoardStatus(this);
             presenceSensor.SomeoneDetected += presenceSensor_SomeoneDetected;
             
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
@@ -77,6 +78,7 @@ namespace BoardApplication
             info.DataType = "presence";
             info.Value = presence?1.0:0.0;
             queue.push(info);
+            status.Presence = presence;
 #if DEBUG
             Debug.Print("Presence : " + (presence ? "yes" : "no"));
 #endif      
@@ -96,6 +98,7 @@ namespace BoardApplication
             info.DataType = "temperature";
             info.Value = temperature;
             queue.push(info);
+            status.Temperature = temperature;
 #if DEBUG
             Debug.Print("got temperature: " + info.Value);
 #endif
@@ -178,7 +181,7 @@ namespace BoardApplication
             info.DataType = "luminosity";
             info.Value = lightSense.ReadVoltage();
             queue.push(info);
-
+            status.Luminosity = info.Value;
             
 
 #if DEBUG
@@ -194,6 +197,7 @@ namespace BoardApplication
             queue.push(info);
             //Mainboard.SetDebugLED(true);
             relayX1.TurnOn();
+            status.LightOn = true;
         }
         public void turnOffLight() {
             InfoToHost info = new InfoToHost();
@@ -202,6 +206,29 @@ namespace BoardApplication
             queue.push(info);
             //Mainboard.SetDebugLED(false);
             relayX1.TurnOff();
+            status.LightOn = false;
+        }
+
+        public void turnOffHeather()
+        {
+            InfoToHost info = new InfoToHost();
+            info.DataType = "heather";
+            info.Value = 0.0;
+            queue.push(info);
+            //Mainboard.SetDebugLED(false);
+            multicolorLED.TurnOff();
+            status.HeatherOn = false;
+        }
+
+        public void turnOnHeather()
+        {
+            InfoToHost info = new InfoToHost();
+            info.DataType = "heather";
+            info.Value = 1.0;
+            queue.push(info);
+            //Mainboard.SetDebugLED(false);
+            multicolorLED.TurnRed();
+            status.HeatherOn=true;
         }
 
 

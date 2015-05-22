@@ -30,6 +30,9 @@ namespace BoardApplication {
         /// <summary>The Relay X1 module using socket 4 of the mainboard.</summary>
         private Gadgeteer.Modules.GHIElectronics.RelayX1 relayX1;
         
+        /// <summary>The Multicolor LED module using socket 8 of the mainboard.</summary>
+        private Gadgeteer.Modules.GHIElectronics.MulticolorLED multicolorLED;
+        
         /// <summary>This property provides access to the Mainboard API. This is normally not necessary for an end user program.</summary>
         protected new static GHIElectronics.Gadgeteer.FEZSpider Mainboard {
             get {
@@ -57,6 +60,7 @@ namespace BoardApplication {
             this.displayTE35 = new GTM.GHIElectronics.DisplayTE35(14, 13, 12, 10);
             this.lightSense = new GTM.GHIElectronics.LightSense(9);
             this.relayX1 = new GTM.GHIElectronics.RelayX1(4);
+            this.multicolorLED = new GTM.GHIElectronics.MulticolorLED(8);
         }
     }
 }
