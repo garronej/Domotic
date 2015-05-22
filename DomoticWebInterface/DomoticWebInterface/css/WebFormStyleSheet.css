@@ -1,0 +1,35 @@
+﻿.frame {
+
+    border: 3px solid #98c335;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: rgba(90, 90, 90, 0.7);
+
+}
+
+p {
+
+    color: #98c335;
+    font-size:90%;
+
+}
+
+
+ #realTimeValues ul {
+        list-style: none;
+    }
+
+        #realTimeValues ul li {
+            display: inline-block;
+            
+            padding: 10px 15px;
+        }
+
+
+.interruptor {
+    height:40px;
+}
+
+.luminosity {
+    height:75px;
+}

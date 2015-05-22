@@ -1,0 +1,82 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="DomoticWebInterface.Site" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+
+    <title>Master</title>
+    <link href="css/MasterPageStyleSheet.css" rel="stylesheet" type="text/css" media="screen" />
+
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+    
+        
+
+            <table id="wrapper">
+                <tr id="header">
+
+                    <td>
+                        
+                        <img
+                            style="height:45%;margin-left:30px"
+                            class="logo" 
+                            src="img/Logo2.gif"
+                            />
+
+
+                    </td>
+
+
+                    <td style="width:100%">
+
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
+                        </asp:ContentPlaceHolder>
+
+
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="border-top: 10px solid #98c335">
+
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder3" runat="server">
+                        </asp:ContentPlaceHolder>
+
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="height:20%">
+
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder4" runat="server">
+                        </asp:ContentPlaceHolder>
+
+                    </td>
+                </tr>
+
+                <tr style="height:90px">
+                    <td id="footer" colspan="2">
+                        <p>Progect in laboratory, Turin, 2015</p>
+                    </td>
+                </tr>
+
+
+                
+
+
+            </table>
+
+        
+        
+    
+    </form>
+</body>
+</html>
