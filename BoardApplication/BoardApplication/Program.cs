@@ -28,6 +28,10 @@ namespace BoardApplication
         private PresenceSensor presenceSensor = new PresenceSensor(5);
         private WebService ws;
         private BoardStatus status;
+
+        public BoardStatus getStatus() {
+            return status;
+        }
         private ThreadSafeQueue queue = new ThreadSafeQueue(100);
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -231,7 +235,24 @@ namespace BoardApplication
             status.HeatherOn=true;
         }
 
+        public void notifyAutomaticHeather(bool auto) {
+            InfoToHost info = new InfoToHost();
+            info.DataType = "automatic_heather";
+            info.Value = auto?1.0:0.0;
+            queue.push(info);
+        
+        
+        }
 
+        public void notifyAutomaticLight(bool auto)
+        {
+            InfoToHost info = new InfoToHost();
+            info.DataType = "automatic_light";
+            info.Value = auto ? 1.0 : 0.0;
+            queue.push(info);
+
+
+        }
         
     }
 }

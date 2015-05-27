@@ -3,7 +3,7 @@ using Microsoft.SPOT;
 
 namespace BoardApplication
 {
-    class BoardStatus
+    public class BoardStatus
     {
         private static double LUMINOSITY_THRESHOLD = 1.0;
         private static double TEMPERATURE_THRESHOLD = 18.0;
@@ -12,12 +12,12 @@ namespace BoardApplication
         public bool AutomaticLightMangement {
             get { return _automaticLightManagement; }
             set {
+                _automaticLightManagement = value;
                 if (value) {
                     Luminosity = Luminosity;
                 }
-                _automaticLightManagement = value;
-                
-                //TODO: notify changes to the server
+
+                board.notifyAutomaticLight(_automaticLightManagement);
             }
             
         }
@@ -28,13 +28,13 @@ namespace BoardApplication
             get { return _automaticHeatherManagement; }
             set
             {
+                _automaticHeatherManagement = value;
                 if (value)
                 {
                     Temperature = Temperature;
                 }
-                _automaticHeatherManagement = value;
 
-                //TODO: notify changes to the server
+                board.notifyAutomaticHeather(_automaticHeatherManagement);
             }
 
         }
@@ -49,18 +49,23 @@ namespace BoardApplication
             get { return _temperature; }
             set {
                 _temperature = value;
-                if (_temperature < TEMPERATURE_THRESHOLD)
+                if (AutomaticHeatherMangement)
                 {
-                    if (!_heatherOn) { 
-                        board.turnOnHeather();
+                    if (_temperature < TEMPERATURE_THRESHOLD)
+                    {
+                        if (!_heatherOn)
+                        {
+                            board.turnOnHeather();
+                        }
+                    }
+                    else
+                    {
+                        if (_heatherOn)
+                        {
+                            board.turnOffHeather();
+                        }
                     }
                 }
-                else {
-                    if (_heatherOn) {
-                        board.turnOffHeather();
-                    }
-                }
-
             }
         
         }
@@ -71,21 +76,25 @@ namespace BoardApplication
             get{ return _luminosity; }
             set{
                 _luminosity=value;
-                if (_luminosity > LUMINOSITY_THRESHOLD)
+                if (AutomaticLightMangement)
                 {
-                    if (_presence && !_lightOn)
+                    if (_luminosity > LUMINOSITY_THRESHOLD)
                     {
-                        board.turnOnLight();
+                        if (_presence && !_lightOn)
+                        {
+                            board.turnOnLight();
+
+                        }
+                    }
+                    else
+                    {
+                        if (!_presence && _lightOn)
+                        {
+                            board.turnOffLight();
+
+                        }
 
                     }
-                }
-                else {
-                    if (!_presence && _lightOn)
-                    {
-                        board.turnOffLight();
-
-                    }
-                    
                 }
             }
         
@@ -94,7 +103,30 @@ namespace BoardApplication
         private bool _presence = false;
         public bool Presence {
             get { return _presence; }
-            set { _presence = value; }
+            set { 
+                _presence = value;
+                if (AutomaticLightMangement)
+                {
+                    if (_luminosity > LUMINOSITY_THRESHOLD)
+                    {
+                        if (_presence && !_lightOn)
+                        {
+                            board.turnOnLight();
+
+                        }
+                    }
+                    else
+                    {
+                        if (!_presence && _lightOn)
+                        {
+                            board.turnOffLight();
+
+                        }
+
+                    }
+                }
+                
+            }
         }
 
 
