@@ -74,10 +74,68 @@ namespace BoardApplication
                     putLightsManager(path.Substring(path.IndexOf("/")+1));
                     
                     break;
+                    case "automatic_light":
+                    putAutomaticLightsManager(path.Substring(path.IndexOf("/") + 1));
+                    break;
+                    case "automatic_heather":
+                    putAutomaticHeatherManager(path.Substring(path.IndexOf("/") + 1));
+                    break;
+                    case "heather":
+                    putHeatherManager(path.Substring(path.IndexOf("/") + 1));
+
+                    break;
+                    default:
+                    responder.Respond(Encoding.UTF8.GetBytes("\"KO\""), "text/json");
+                    return;
                 }
                 
             }
             responder.Respond(Encoding.UTF8.GetBytes("\"OK\""), "text/json");
+        }
+
+        private void putHeatherManager(string p)
+        {
+#if DEBUG
+            Debug.Print("Called PUT the heather " + p);
+#endif
+            if (p.Equals("on"))
+            {
+                board.turnOnHeather();
+            }
+            else if (p.Equals("off"))
+            {
+                board.turnOffHeather();
+            }
+        }
+
+        private void putAutomaticHeatherManager(string p)
+        {
+#if DEBUG
+            Debug.Print("Called PUT the automatic management of lights " + p);
+#endif
+            if (p.Equals("on"))
+            {
+                board.getStatus().AutomaticHeatherMangement = true;
+            }
+            else if (p.Equals("off"))
+            {
+                board.getStatus().AutomaticHeatherMangement = false;
+            }
+        }
+
+        private void putAutomaticLightsManager(string p)
+        {
+#if DEBUG
+            Debug.Print("Called PUT the automatic management of lights " + p);
+#endif
+            if (p.Equals("on"))
+            {
+                board.getStatus().AutomaticLightMangement=true;
+            }
+            else if (p.Equals("off"))
+            {
+                board.getStatus().AutomaticLightMangement = false;
+            }
         }
 
         private void putLightsManager(string p)
