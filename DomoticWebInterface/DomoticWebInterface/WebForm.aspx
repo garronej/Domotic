@@ -1,4 +1,6 @@
 ﻿<%@ Page Title="WebForm" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="WebForm.aspx.cs" Inherits="DomoticWebInterface.WebForm" %>
+
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <link href="css/WebFormStyleSheet.css" rel="stylesheet" type="text/css" media="screen" />
@@ -15,7 +17,7 @@
             <ContentTemplate>
 
 
-                <asp:Timer ID="Timer1" runat="server" Interval="6000" OnTick="Timer1_Tick"></asp:Timer>
+                <asp:Timer ID="Timer1" runat="server" Interval="10000" OnTick="Timer1_Tick"></asp:Timer>
                               
                
                 <div id ="realTimeValues" style="float:right" class="frame">
@@ -101,6 +103,34 @@
 
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder3" runat="server">
+
+    <div style="width:100%;text-align:center;" >
+
+        <p>Chart of temperature :</p>
+
+        
+
+         <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
+                <asp:ListItem Text="Last 12 hours" Value="0" Selected="True"></asp:ListItem>
+                <asp:ListItem Text="Last 24 hours" Value="1"></asp:ListItem>
+                <asp:ListItem Text="Last week" Value="2"></asp:ListItem>
+    </asp:DropDownList>
+
+
+    </div>
+
+    
+
+    <asp:Chart ID="Chart1" runat="server" Width="550px" 
+                    Height="350px" EnableViewState="true" CssClass="centerChart">
+                    
+    </asp:Chart>
+
+    
+
+   
+
+
 </asp:Content>
 
 

@@ -41,15 +41,17 @@ namespace BusinessLogic
     class RESTManager
     {
 
-        private static String baseUri = "http://192.168.0.2:9000/";
+        private static String baseURI = "http://127.0.0.1:8733/";
 
 
         public static List<Record<T>> request<T>(Method method, String relativeURI, Dictionary<string, string> parameters)
         {
 
+            System.Diagnostics.Debug.WriteLine("Entering request :"); 
+
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(RESTManager.baseUri);
+                client.BaseAddress = new Uri(RESTManager.baseURI);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -58,6 +60,11 @@ namespace BusinessLogic
                 switch (method)
                 {
                     case Method.GET:
+
+                        System.Diagnostics.Debug.WriteLine("GET");
+
+                        System.Diagnostics.Debug.WriteLine("baseUri : " + RESTManager.baseURI);
+
                         if (parameters != null)
                         {
                             List<String> list = new List<string>();
@@ -67,10 +74,27 @@ namespace BusinessLogic
                             }
                             relativeURI += "?" + string.Join("&", list);
 
+
+                            
+                            
+
                         }
+
+                        System.Diagnostics.Debug.WriteLine("RelativeURI : " + relativeURI); 
+
+
                         response = client.GetAsync(relativeURI).Result;
                         break;
                     case Method.POST:
+
+                         System.Diagnostics.Debug.WriteLine("POST"); 
+
+                         System.Diagnostics.Debug.WriteLine("baseUri : " + RESTManager.baseURI);
+                         System.Diagnostics.Debug.WriteLine("RelativeURI : " + relativeURI);
+                         System.Diagnostics.Debug.WriteLine("parameters : " + (new FormUrlEncodedContent(parameters)).ToString());
+
+
+
                         response = client.PostAsync(relativeURI, new FormUrlEncodedContent(parameters)).Result;
                         break;
                 }
@@ -79,6 +103,10 @@ namespace BusinessLogic
 
                 if (response.IsSuccessStatusCode)
                 {
+
+                    System.Diagnostics.Debug.WriteLine("responce success !"); 
+
+
                     var tmp = response.Content.ReadAsStringAsync();
 
                     tmp.Wait();
@@ -92,6 +120,8 @@ namespace BusinessLogic
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("responce failed !"); 
+
                     throw new Exception("Error");
                 }
             }
