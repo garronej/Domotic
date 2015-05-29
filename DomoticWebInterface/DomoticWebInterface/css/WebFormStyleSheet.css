@@ -35,6 +35,7 @@ p {
 }
 
 .centerChart {
+
+    margin: 0 auto;
  
-    margin-left: 1200px;
 }

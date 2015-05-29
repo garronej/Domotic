@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\MasterPageStyleSheet.css" />
+    <Content Include="css\jquery-ui.css" />
     <Content Include="css\WebFormStyleSheet.css" />
     <Content Include="img\Actions-view-calendar-icon.png" />
     <Content Include="img\background.jpg" />
@@ -95,6 +96,7 @@
     <Content Include="img\Sign-Error-icon.png" />
     <Content Include="img\void16.png" />
     <Content Include="img\void24.png" />
+    <Content Include="js\myScript.js" />
     <Content Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
