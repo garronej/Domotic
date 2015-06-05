@@ -22,7 +22,7 @@ namespace BusinessLogic
 
             parameters.Add("period", period.ToString());
 
-            return RESTManager.request<double>(Method.GET, "temperature", parameters);
+            return RESTManager.request<double>(Method.GET, "domotic/temperature", parameters);
 
         }
 
@@ -41,7 +41,7 @@ namespace BusinessLogic
 
         public static bool isHeatingSystemOn()
         {
-            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "temperature/heater", null);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "domotic/heater/status", null);
             return result[0].value;
         }
 
@@ -52,7 +52,7 @@ namespace BusinessLogic
 
             parameters.Add("action", action.ToString());
 
-            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "temperature/heater", parameters);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "domotic/heater/status", parameters);
             return result[0].value;
 
 
@@ -63,7 +63,7 @@ namespace BusinessLogic
 
         public static bool isHeatingAutomaticManagmentOn()
         {
-            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "temperature/heater/automatic", null);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "domotic/heater/automatic", null);
             return result[0].value;
         }
 
@@ -73,7 +73,7 @@ namespace BusinessLogic
 
             parameters.Add("action", action.ToString());
 
-            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "temperature/heater/automatic", parameters);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "domotic/heater/automatic", parameters);
             return result[0].value;
         }
 
@@ -84,31 +84,33 @@ namespace BusinessLogic
 
         /* ---------- luminosity ----------*/
 
-        public static List<Record<double>> getLuminosity(Period period)
+        public static List<Record<double>> getLuminosityRecord()
         {
 
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-
-            parameters.Add("period", period.ToString());
-
-            return RESTManager.request<double>(Method.GET, "luminosity", parameters);
+            return RESTManager.request<double>(Method.GET, "domotic/luminosity", null);
 
         }
+
 
         public static double getLuminosity()
         {
 
-            List<Record<double>> result = Manager.getLuminosity(Period.LAST);
+           
+            List<Record<double>> result = Manager.getLuminosityRecord();
 
+          
             return result[0].value;
+
         }
+
+    
 
         /* ----- luminosity/light -----*/
 
 
         public static bool isLightOn()
         {
-            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "luminosity/light", null);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "domotic/light/status", null);
             return result[0].value;
         }
 
@@ -119,7 +121,7 @@ namespace BusinessLogic
 
             parameters.Add("action", action.ToString());
 
-            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "luminosity/light", parameters);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "domotic/light/status", parameters);
             return result[0].value;
 
 
@@ -130,7 +132,7 @@ namespace BusinessLogic
 
         public static bool isLightAutomaticManagmentOn()
         {
-            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "luminosity/light/automatic", null);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.GET, "domotic/light/automatic", null);
             return result[0].value;
         }
 
@@ -140,7 +142,7 @@ namespace BusinessLogic
 
             parameters.Add("action", action.ToString());
 
-            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "luminosity/light/automatic", parameters);
+            List<Record<bool>> result = RESTManager.request<bool>(Method.POST, "domotic/light/automatic", parameters);
             return result[0].value;
         }
 
@@ -155,7 +157,7 @@ namespace BusinessLogic
 
             parameters.Add("period", period.ToString());
 
-            return RESTManager.request<bool>(Method.GET, "presence", parameters);
+            return RESTManager.request<bool>(Method.GET, "domotic/presence", parameters);
 
         }
 
