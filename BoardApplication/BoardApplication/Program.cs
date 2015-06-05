@@ -16,6 +16,8 @@ using Gadgeteer.Modules.GHIElectronics;
 using Ws.Services;
 using Ws.Services.Binding;
 using Gadgeteer.Modules.Polito;
+using GHI.Glide;
+using GHI.Glide.UI;
 
 
 namespace BoardApplication
@@ -28,6 +30,7 @@ namespace BoardApplication
         private PresenceSensor presenceSensor = new PresenceSensor(5);
         private WebService ws;
         private BoardStatus status;
+        //private DisplayController display;
 
         public BoardStatus getStatus() {
             return status;
@@ -36,6 +39,7 @@ namespace BoardApplication
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
+            
             /*******************************************************************************************
             Modules added in the Program.gadgeteer designer view are used by typing 
             their name followed by a period, e.g.  button.  or  camera.
@@ -48,6 +52,13 @@ namespace BoardApplication
                 timer.Tick +=<tab><tab>
                 timer.Start();
             *******************************************************************************************/
+            GHI.Glide.Display.Window Main_menu = GlideLoader.LoadWindow(Resources.GetString(Resources.StringResources.MAIN_MENU));
+            //Debug.Print(Resources.GetString(Resources.StringResources.MAIN_MENU));
+            Glide.MainWindow = Main_menu;
+
+            GlideTouch.Initialize();
+            setupCallbackManiMenu(Main_menu);
+            //display = new DisplayController(this);
             status = new BoardStatus(this);
             presenceSensor.SomeoneDetected += presenceSensor_SomeoneDetected;
             
@@ -253,6 +264,79 @@ namespace BoardApplication
 
 
         }
-        
+
+
+        public void startMotorUp() {
+            motorDriverL298.SetSpeed(MotorDriverL298.Motor.Motor1,0.5);
+        }
+
+
+        internal void stopMotor()
+        {
+            motorDriverL298.SetSpeed(MotorDriverL298.Motor.Motor1, 0.2);
+        }
+
+        internal void startMotorDown()
+        {
+            motorDriverL298.SetSpeed(MotorDriverL298.Motor.Motor1, -0.5);
+        }
+
+        private void setupCallbackManiMenu(GHI.Glide.Display.Window Main_menu)
+        {
+            Button Set_heating = (Button)Main_menu.GetChildByName("Set_heating");
+            Set_heating.TapEvent += TempTap;
+
+            Button Set_light = (Button)Main_menu.GetChildByName("Set_light");
+            Set_light.TapEvent += LumTap;
+
+            Button Up_motor = (Button)Main_menu.GetChildByName("Up_motor");
+            Button Down_motor = (Button)Main_menu.GetChildByName("Down_motor");
+
+            Up_motor.PressEvent += Up_motor_PressEvent;
+            Up_motor.ReleaseEvent += Up_motor_ReleaseEvent;
+
+            Down_motor.PressEvent += Down_motor_PressEvent;
+            Down_motor.ReleaseEvent += Up_motor_ReleaseEvent;
+        }
+
+        private void Down_motor_PressEvent(object sender)
+        {
+            this.startMotorDown();
+        }
+
+        private void Up_motor_ReleaseEvent(object sender)
+        {
+            this.stopMotor();
+        }
+
+        void Up_motor_PressEvent(object sender)
+        {
+            this.startMotorUp();
+        }
+
+        private void MenuTap(object sender)
+        {
+            GHI.Glide.Display.Window Main_menu = GlideLoader.LoadWindow(Resources.GetString(Resources.StringResources.MAIN_MENU));
+            Glide.MainWindow = Main_menu;
+
+            this.setupCallbackManiMenu(Main_menu);
+        }
+
+        private void TempTap(object sender)
+        {
+
+            GHI.Glide.Display.Window SUB_TEMPERATURE_MENU = GlideLoader.LoadWindow(Resources.GetString(Resources.StringResources.SUB_TEMPERATURE_MENU));
+            Glide.MainWindow = SUB_TEMPERATURE_MENU;
+            Button Main_temperature = (Button)SUB_TEMPERATURE_MENU.GetChildByName("Main_temperature");
+            Main_temperature.TapEvent += MenuTap;
+        }
+
+        private void LumTap(object sender)
+        {
+            GHI.Glide.Display.Window SUB_LUMINOSITY_MENU = GlideLoader.LoadWindow(Resources.GetString(Resources.StringResources.SUB_LUMINOSITY_MENU));
+            Glide.MainWindow = SUB_LUMINOSITY_MENU;
+            Button Main_light = (Button)SUB_LUMINOSITY_MENU.GetChildByName("Main_light");
+            Main_light.TapEvent += MenuTap;
+        }
     }
 }

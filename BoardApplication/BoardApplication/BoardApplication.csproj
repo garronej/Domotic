@@ -41,6 +41,7 @@
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
     <Compile Include="BoardStatus.cs" />
+    <Compile Include="DisplayController.cs" />
     <Compile Include="InfoToHost.cs" />
     <Compile Include="Program.generated.cs">
       <AutoGen>True</AutoGen>
@@ -71,6 +72,7 @@
     <Reference Include="Gadgeteer.WebServer, Version=2.43.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="GHI.Glide, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="GHI.Networking, Version=4.3.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -84,6 +86,9 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="GTM.GHIElectronics.LightSense, Version=4.3.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="GTM.GHIElectronics.MotorDriverL298, Version=4.3.6.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="GTM.GHIElectronics.MulticolorLED, Version=4.3.6.0, Culture=neutral, processorArchitecture=MSIL">
@@ -141,5 +146,10 @@
       <Project>{A885E290-3B13-4798-9A2E-FBB3E7704744}</Project>
       <Name>WebServer_43</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAIN_MENU.xml" />
+    <Content Include="Resources\SUB_LUMINOSITY_MENU.xml" />
+    <Content Include="Resources\SUB_TEMPERATURE_MENU.xml" />
   </ItemGroup>
 </Project>

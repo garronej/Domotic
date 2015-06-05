@@ -33,6 +33,9 @@ namespace BoardApplication {
         /// <summary>The Multicolor LED module using socket 8 of the mainboard.</summary>
         private Gadgeteer.Modules.GHIElectronics.MulticolorLED multicolorLED;
         
+        /// <summary>The Motor Driver L298 module using socket 11 of the mainboard.</summary>
+        private Gadgeteer.Modules.GHIElectronics.MotorDriverL298 motorDriverL298;
+        
         /// <summary>This property provides access to the Mainboard API. This is normally not necessary for an end user program.</summary>
         protected new static GHIElectronics.Gadgeteer.FEZSpider Mainboard {
             get {
@@ -61,6 +64,7 @@ namespace BoardApplication {
             this.lightSense = new GTM.GHIElectronics.LightSense(9);
             this.relayX1 = new GTM.GHIElectronics.RelayX1(4);
             this.multicolorLED = new GTM.GHIElectronics.MulticolorLED(8);
+            this.motorDriverL298 = new GTM.GHIElectronics.MotorDriverL298(11);
         }
     }
 }

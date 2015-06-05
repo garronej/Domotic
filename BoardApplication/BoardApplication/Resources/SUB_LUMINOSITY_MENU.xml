@@ -1,0 +1,9 @@
+<Glide Version="1.0.7">
+  <Window Name="SUB_LUMINOSITY_MENU" Width="320" Height="240" BackColor="FFFFFF">
+    <Button Name="Main_light" X="95" Y="200" Width="130" Height="40" Alpha="255" Text="Main" Font="5" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
+    <Button Name="Button_luminosity_plus" X="215" Y="80" Width="105" Height="40" Alpha="255" Text="+" Font="6" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
+    <Button Name="Button_luminosity_minus" X="0" Y="80" Width="105" Height="40" Alpha="255" Text="-" Font="6" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
+    <TextBox Name="Textbox_luminosity" X="108" Y="80" Width="105" Height="40" Alpha="255" Text="" TextAlign="center" Font="4" FontColor="000000"/>
+    <TextBlock Name="instance5847" X="45" Y="53" Width="230" Height="32" Alpha="255" Text="Luminosity Threshold" TextAlign="center" TextVerticalAlign="Top" Font="5" FontColor="0" BackColor="000000" ShowBackColor="False"/>
+  </Window>
+</Glide>
