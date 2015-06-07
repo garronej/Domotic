@@ -143,40 +143,44 @@ namespace BoardApplication
 
         void sendDataToServer() {
             object item;
-            while (!this.ethernetJ11D.NetworkInterface.NetworkIsAvailable)
+            while (true)
             {
-                Thread.Sleep(1000);
-            }
-            while (queue.pull(out item)) {
-                InfoToHost info = (InfoToHost)item;
-#if DEBUG
-                Debug.Print("Sending to the server " + info);
-#endif
-                
-                
-                try
+                while (!this.ethernetJ11D.NetworkInterface.NetworkIsAvailable)
                 {
-                   
-                    string address = "http://" + hostRunningWCFService + "/domotic/insert/"+info.DataType;
-
-                    POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
-                    
-                    HttpRequest req =
-                        HttpHelper.CreateHttpPostRequest(address, content, "text/json");
-                    req.AddHeaderField("Content-Type","text/json");
-                    req.ResponseReceived += req_ResponseReceived;
-#if DEBUG
-                    Debug.Print("Sending request to " + req.URL);
-#endif
-                    req.SendRequest();
-
-
+                    Thread.Sleep(1000);
                 }
-                catch (System.Exception e)
+                while (queue.pull(out item))
                 {
-                    Debug.Print("exception!!!");
-                    Debug.Print(e.Message);
-                    queue.Close();
+                    InfoToHost info = (InfoToHost)item;
+#if DEBUG
+                    Debug.Print("Sending to the server " + info);
+#endif
+
+
+                    try
+                    {
+
+                        string address = "http://" + hostRunningWCFService + "/domotic/insert/" + info.DataType;
+
+                        POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
+
+                        HttpRequest req =
+                            HttpHelper.CreateHttpPostRequest(address, content, "text/json");
+                        req.AddHeaderField("Content-Type", "text/json");
+                        req.ResponseReceived += req_ResponseReceived;
+#if DEBUG
+                        Debug.Print("Sending request to " + req.URL);
+#endif
+                        req.SendRequest();
+
+
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.Print("exception!!!");
+                        Debug.Print(e.Message);
+                        break;
+                    }
                 }
             }
         }
