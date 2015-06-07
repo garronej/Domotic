@@ -2,6 +2,15 @@
     background-color: #808080;
 }
 
+.shadow {
+
+    -webkit-box-shadow: -15px 17px 45px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: -15px 17px 45px -2px rgba(0,0,0,0.75);
+box-shadow: -15px 17px 45px -2px rgba(0,0,0,0.75);
+
+
+}
+
 #wrapper {
     
     margin-left: auto;
@@ -11,7 +20,9 @@
     border: 3px solid #98c335;
     border-radius: 20px;
     overflow: hidden;
-    width:1442px
+    width:1442px;
+    
+
 }
 
 #header {
@@ -34,28 +45,7 @@
     
 
 
-/*Header*/
 
-/*
-#header {
-    height: 15%;
-    width: 100%;
-    background-color: rgba(59, 59, 59, 0.7);
-    border-bottom: 10px solid #98c335;
-    vertical-align: bottom;
-}
-
-    */
-
-/*
-.logo {
-    width: 27%;
-    height: auto;
-    margin-left: 1%;
-    margin-bottom: 1px;
-    float:left;
-}
-    */
 
 
 

@@ -68,6 +68,7 @@
     <Content Include="img\calendar.png" />
     <Content Include="img\Check-icon.png" />
     <Content Include="img\exXML.gif" />
+    <Content Include="img\favico.ico" />
     <Content Include="img\loading.gif" />
     <Content Include="img\Logo.gif" />
     <Content Include="img\Logo2.gif" />
@@ -90,7 +91,9 @@
     <Content Include="img\lum8.gif" />
     <Content Include="img\lum9.gif" />
     <Content Include="img\off.gif" />
+    <Content Include="img\offAlt.gif" />
     <Content Include="img\on.gif" />
+    <Content Include="img\onAlt.gif" />
     <Content Include="img\onOff.jpg" />
     <Content Include="img\Right3Green.png" />
     <Content Include="img\Sign-Error-icon.png" />

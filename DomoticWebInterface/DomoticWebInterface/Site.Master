@@ -6,6 +6,7 @@
 <head runat="server">
 
     <title>Master</title>
+    <link rel="shortcut icon" href="img/favico.ico"/>
     <link href="css/MasterPageStyleSheet.css" rel="stylesheet" type="text/css" media="screen" />
 
 
@@ -27,14 +28,15 @@
     
         
 
-            <table id="wrapper">
+            <table id="wrapper" class="shadow">
                 <tr id="header">
 
                     <td>
+
                         
                         <img
                             style="height:45%;margin-left:30px"
-                            class="logo" 
+                           
                             src="img/Logo2.gif"
                             />
 
@@ -42,7 +44,7 @@
                     </td>
 
 
-                    <td style="width:100%;height:400px">
+                    <td style="width:100%;height:400px;">
 
                         <asp:ContentPlaceHolder ID="ContentPlaceHolder2" runat="server">
                         </asp:ContentPlaceHolder>

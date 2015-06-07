@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+
 
 using System.Web;
 
@@ -47,7 +46,6 @@ namespace BusinessLogic
         public static List<Record<T>> request<T>(Method method, String relativeURI, Dictionary<string, string> parameters)
         {
 
-            System.Diagnostics.Debug.WriteLine("Entering request :"); 
 
             using (var client = new HttpClient())
             {
@@ -61,9 +59,7 @@ namespace BusinessLogic
                 {
                     case Method.GET:
 
-                        System.Diagnostics.Debug.WriteLine("GET");
 
-                        System.Diagnostics.Debug.WriteLine("baseUri : " + RESTManager.baseURI);
 
                         if (parameters != null)
                         {
@@ -73,25 +69,17 @@ namespace BusinessLogic
                                 list.Add(item.Key + "=" + HttpUtility.UrlEncode(item.Value));
                             }
                             relativeURI += "?" + string.Join("&", list);
-
-
-                            
-                            
+                                                        
 
                         }
 
-                        System.Diagnostics.Debug.WriteLine("RelativeURI : " + relativeURI); 
 
 
                         response = client.GetAsync(relativeURI).Result;
                         break;
                     case Method.POST:
 
-                         System.Diagnostics.Debug.WriteLine("POST"); 
 
-                         System.Diagnostics.Debug.WriteLine("baseUri : " + RESTManager.baseURI);
-                         System.Diagnostics.Debug.WriteLine("RelativeURI : " + relativeURI);
-                         System.Diagnostics.Debug.WriteLine("parameters : " + (new FormUrlEncodedContent(parameters)).ToString());
 
 
 
@@ -103,8 +91,8 @@ namespace BusinessLogic
 
                 if (response.IsSuccessStatusCode)
                 {
+                    
 
-                    System.Diagnostics.Debug.WriteLine("responce success !"); 
 
 
                     var tmp = response.Content.ReadAsStringAsync();
@@ -113,16 +101,89 @@ namespace BusinessLogic
 
                     String jsonString = tmp.Result;
 
-                    RootRecord<T> rootRecord = JsonConvert.DeserializeObject<RootRecord<T>>(jsonString);
+
+                    RootRecord<T> rootRecord;
+                    try
+                    {
+                        rootRecord = JsonConvert.DeserializeObject<RootRecord<T>>(jsonString);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("!!!!Error in parsing !!!!");
+                        throw new SystemException();
+                    }
+
+                    /* Trace */
+                    if (method == Method.GET)
+                    {
+                        System.Diagnostics.Debug.WriteLine( Environment.NewLine + Environment.NewLine +
+                            method.ToString() + " " + RESTManager.baseURI + relativeURI + Environment.NewLine + "Responce : " + jsonString +
+                            Environment.NewLine + Environment.NewLine);
+                    }
+                    else
+                    {
+
+                        String paramString = "";
+                        if (parameters != null)
+                        {
+                            List<String> list = new List<string>();
+                            foreach (var item in parameters)
+                            {
+                                list.Add(item.Key + "=" + HttpUtility.UrlEncode(item.Value));
+                            }
+                            paramString += string.Join("; ", list);
+                        }
+
+
+                        System.Diagnostics.Debug.WriteLine( Environment.NewLine + Environment.NewLine +
+                            method.ToString() +
+                            " " + RESTManager.baseURI +
+                            relativeURI + Environment.NewLine +
+                            "parameters : " +
+                            paramString +
+                            Environment.NewLine + "Responce : " + jsonString +
+                            Environment.NewLine + Environment.NewLine);
+                    }
+                    /* Trace */
+
 
                     return rootRecord.record;
 
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("responce failed !"); 
+                    /* Trace */
+                    if (method == Method.GET)
+                    {
+                        System.Diagnostics.Debug.WriteLine( Environment.NewLine + Environment.NewLine +
+                            method.ToString() + " " + RESTManager.baseURI + relativeURI + Environment.NewLine + "Error! " + Environment.NewLine + Environment.NewLine);
+                    }
+                    else
+                    {
 
-                    throw new Exception("Error");
+                        String paramString = "";
+                        if (parameters != null)
+                        {
+                            List<String> list = new List<string>();
+                            foreach (var item in parameters)
+                            {
+                                list.Add(item.Key + "=" + HttpUtility.UrlEncode(item.Value));
+                            }
+                            paramString += string.Join("; ", list);
+                        }
+
+                        System.Diagnostics.Debug.WriteLine( Environment.NewLine + Environment.NewLine +
+                            method.ToString() +
+                            " " + RESTManager.baseURI +
+                            relativeURI + Environment.NewLine +
+                            "parameters : " +
+                            paramString +
+                            Environment.NewLine + "Error!" +
+                            Environment.NewLine + Environment.NewLine);
+                    }
+                    /* Trace */
+
+                    throw new Exception("RESTManager error");
                 }
             }
 
