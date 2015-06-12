@@ -58,6 +58,8 @@ namespace BoardApplication
 
             GlideTouch.Initialize();
             setupCallbackManiMenu(Main_menu);
+
+            multicolorLED.TurnOff(); //init the multicolor led
             //display = new DisplayController(this);
             status = new BoardStatus(this);
             presenceSensor.SomeoneDetected += presenceSensor_SomeoneDetected;
@@ -301,7 +303,46 @@ namespace BoardApplication
 
             Down_motor.PressEvent += Down_motor_PressEvent;
             Down_motor.ReleaseEvent += Up_motor_ReleaseEvent;
+
+
+            ((Button)Main_menu.GetChildByName("On_heating")).TapEvent += heatingOnTap;
+            ((Button)Main_menu.GetChildByName("Off_heating")).TapEvent += heatingOffTap;
+
+            ((Button)Main_menu.GetChildByName("On_light")).TapEvent += lightOnTap;
+            ((Button)Main_menu.GetChildByName("Off_light")).TapEvent += lightOffTap;
+
+            luminosityText = (TextBox)Main_menu.GetChildByName("Luminosity_box");
+            presenceText = (TextBox)Main_menu.GetChildByName("Presence_box");
+            temperatureText = (TextBox)Main_menu.GetChildByName("Temperature_box");
+
         }
+
+        void heatingOnTap(object sender)
+        {
+            turnOnHeather();
+        }
+        void heatingOffTap(object sender)
+        {
+            turnOffHeather();
+        }
+
+        void lightOnTap(object sender)
+        {
+            turnOnLight();
+        }
+        void lightOffTap(object sender)
+        {
+            turnOffLight();
+        }
+
+
+
+        public TextBox luminosityText = null;
+        public TextBox presenceText = null;
+        public TextBox temperatureText = null;
+        
+
+
 
         private void Down_motor_PressEvent(object sender)
         {

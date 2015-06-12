@@ -49,6 +49,11 @@ namespace BoardApplication
             get { return _temperature; }
             set {
                 _temperature = value;
+                if (board.temperatureText != null)
+                {
+                    board.temperatureText.Text = _temperature.ToString();
+                    board.temperatureText.Invalidate();
+                }
                 if (AutomaticHeatherMangement)
                 {
                     if (_temperature < TEMPERATURE_THRESHOLD)
@@ -76,11 +81,15 @@ namespace BoardApplication
             get{ return _luminosity; }
             set{
                 _luminosity=value;
+                if (board.luminosityText != null) {
+                    board.luminosityText.Text = _luminosity.ToString();
+                    board.luminosityText.Invalidate();
+                }
                 if (AutomaticLightMangement)
                 {
-                    if (_luminosity > LUMINOSITY_THRESHOLD)
+                    if (_luminosity < LUMINOSITY_THRESHOLD)
                     {
-                        if (_presence && !_lightOn)
+                        if (_presence && !_lightOn) // sotituire true con _presence
                         {
                             board.turnOnLight();
 
@@ -88,7 +97,7 @@ namespace BoardApplication
                     }
                     else
                     {
-                        if (!_presence && _lightOn)
+                        if (_lightOn)
                         {
                             board.turnOffLight();
 
@@ -105,9 +114,14 @@ namespace BoardApplication
             get { return _presence; }
             set { 
                 _presence = value;
+                if (board.presenceText != null)
+                {
+                    board.presenceText.Text = _presence?"YES":"NO";
+                    board.presenceText.Invalidate();
+                }
                 if (AutomaticLightMangement)
                 {
-                    if (_luminosity > LUMINOSITY_THRESHOLD)
+                    if (_luminosity < LUMINOSITY_THRESHOLD)
                     {
                         if (_presence && !_lightOn)
                         {
@@ -117,7 +131,7 @@ namespace BoardApplication
                     }
                     else
                     {
-                        if (!_presence && _lightOn)
+                        if (_lightOn)
                         {
                             board.turnOffLight();
 

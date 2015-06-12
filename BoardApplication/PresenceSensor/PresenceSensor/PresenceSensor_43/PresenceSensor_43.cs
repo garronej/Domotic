@@ -237,9 +237,13 @@ namespace Gadgeteer.Modules.Polito
             while (true) {
 
                 Thread.Sleep(100);
-                if (input.Read()) {
-
+                if (input.Read())
+                {
+                    TurnLEDOn();
                     lastTime = System.DateTime.Now;
+                }
+                else {
+                    TurnLEDOff();
                 }
                 if (presence)
                 {
@@ -248,12 +252,13 @@ namespace Gadgeteer.Modules.Polito
                     if (System.DateTime.Now.Subtract(tenSecs).CompareTo(lastTime) > 0)
                     {
                         presence = false;
+                        Debug.Print("I'm rising no presence event");
                         this.OnPresenceEvent(this, presence);
                     }
                 }
                 else {
                     if (System.DateTime.Now.Subtract(tenSecs).CompareTo(lastTime) < 0){
-
+                        Debug.Print("I'm rising presence event");
                         presence = true ;
                         this.OnPresenceEvent(this, presence);
                     }

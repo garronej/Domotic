@@ -34,7 +34,7 @@ namespace Gadgeteer.Modules.Polito
             Socket socket = Socket.GetSocket(socketNumber, true, this, null);
 
             _sck = GTI.DigitalOutputFactory.Create(socket, Socket.Pin.Four, false, this);
-            _data = GTI.DigitalIOFactory.Create(socket, Socket.Pin.Five, true, GTI.GlitchFilterMode.Off, GTI.ResistorMode.Disabled, this);
+            _data = GTI.DigitalIOFactory.Create(socket, Socket.Pin.Three, true, GTI.GlitchFilterMode.Off, GTI.ResistorMode.Disabled, this);
 
             new Thread(TakeMeasurements).Start();
         }
@@ -76,57 +76,61 @@ namespace Gadgeteer.Modules.Polito
             }
         }
 
+        private void clock(bool a) {
+            Thread.Sleep(1);
+            _sck.Write(a);
+           
+        }
 
         private void startComunication(){
             _data.Write(true); // init to high value
-            _sck.Write(true);
+            clock(true);
 
-
-            _data.Write(false); 
-            _sck.Write(false);
+            _data.Write(false); //start
+            clock(false);
 
             _data.Write(true); //1
-            _sck.Write(true);
-            _sck.Write(false);
+            clock(true);
+            clock(false);
             _data.Write(false);
         
         }
 
         private void sendTemperatureRequest() {
 
-            _sck.Write(true); // 0
-            _sck.Write(false);
+            clock(true); // 0
+            clock(false);
 
-            _sck.Write(true); // 0
-            _sck.Write(false);
+            clock(true); // 0
+            clock(false);
 
             _data.Write(true); // 1
-            _sck.Write(true);
-            _sck.Write(false);
+            clock(true);
+            clock(false);
             _data.Write(false);
 
-            _sck.Write(true); // A2 : 0
-            _sck.Write(false);
+            clock(true); // A2 : 0
+            clock(false);
 
-            _sck.Write(true); // A1 : 0
-            _sck.Write(false);
+            clock(true); // A1 : 0
+            clock(false);
 
-            _sck.Write(true); // A0 : 0
-            _sck.Write(false);
+            clock(true); // A0 : 0
+            clock(false);
 
             _data.Write(true); // R/W 1
-            _sck.Write(true);
-            _sck.Write(false);
+            clock(true);
+            clock(false);
         
         }
 
 
         private void closeComunication() {
             _data.Write(true); //chiusura
-            _sck.Write(true);
-            _sck.Write(false);
+            clock(true);
+            clock(false);
             _data.Write(false);
-            _sck.Write(true);
+            clock(true);
             _data.Write(true);
 
             
@@ -135,11 +139,14 @@ namespace Gadgeteer.Modules.Polito
         private bool[] readTemperatureIntoBoolArray() {
 
             bool[] response = new bool[8];
-            _sck.Write(true);
 
-            bool ack = _data.Read();
+            while (_data.Read()) ;
 
-            _sck.Write(false);
+            clock(true);
+
+            bool ack = false; //_data.Read();
+
+            clock(false);
 
             if (ack) ErrorPrint("Communication failure when trying to read temperature.");
 
@@ -147,9 +154,9 @@ namespace Gadgeteer.Modules.Polito
             for (short i = 0; i < 8; i++)
             {
                 response[i] = _data.Read();
-                _sck.Write(true);
+                clock(true);
 
-                _sck.Write(false);
+                clock(false);
             }
 
             return response;
