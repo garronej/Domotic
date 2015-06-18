@@ -47,7 +47,7 @@ namespace BoardApplication
             //WebServer.SetupWebEvent("lights").WebEventReceived += lights_Event;
             
             while (!closed) {
-                Thread.Sleep(5000);
+                Thread.Sleep(1000);
             }
         }
 
@@ -59,6 +59,7 @@ namespace BoardApplication
 
         void webEvent_dispatcher(string path, WebServer.HttpMethod method, Responder responder)
         {
+            
             if (method.Equals(WebServer.HttpMethod.PUT)) {
                 string firstURLParam = path.Substring(0, path.IndexOf("/"));
 #if DEBUG
@@ -85,12 +86,18 @@ namespace BoardApplication
 
                     break;
                     default:
-                    responder.Respond(Encoding.UTF8.GetBytes("\"KO\""), "text/json");
+                    lock (board)
+                    {
+                        responder.Respond(Encoding.UTF8.GetBytes("\"KO\""), "text/json");
+                    }
                     return;
                 }
                 
             }
-            responder.Respond(Encoding.UTF8.GetBytes("\"OK\""), "text/json");
+            lock (board)
+            {
+                responder.Respond(Encoding.UTF8.GetBytes("\"OK\""), "text/json");
+            }
         }
 
         private void putHeatherManager(string p)

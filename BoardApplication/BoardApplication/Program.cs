@@ -87,10 +87,13 @@ namespace BoardApplication
             //starting thread to send data to the server
             Thread t = new Thread(sendDataToServer);
             t.Start();
+            temperatureSensor.RequestMeasurement();
+            luminosity_Getter(timer1);
         }
 
         void presenceSensor_SomeoneDetected(PresenceSensor sender, bool presence)
         {
+            Debug.Print("Presence : " + (presence ? "yes" : "no"));
             InfoToHost info = new InfoToHost();
             info.DataType = "presence";
             info.Value = presence?1.0:0.0;
@@ -161,20 +164,21 @@ namespace BoardApplication
 
                     try
                     {
+                        lock (this)
+                        {
+                            string address = "http://" + hostRunningWCFService + "/domotic/insert/" + info.DataType;
 
-                        string address = "http://" + hostRunningWCFService + "/domotic/insert/" + info.DataType;
+                            POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
 
-                        POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
-
-                        HttpRequest req =
-                            HttpHelper.CreateHttpPostRequest(address, content, "text/json");
-                        req.AddHeaderField("Content-Type", "text/json");
-                        req.ResponseReceived += req_ResponseReceived;
+                            HttpRequest req =
+                                HttpHelper.CreateHttpPostRequest(address, content, "text/json");
+                            req.AddHeaderField("Content-Type", "text/json");
+                            req.ResponseReceived += req_ResponseReceived;
 #if DEBUG
-                        Debug.Print("Sending request to " + req.URL);
+                            Debug.Print("Sending request to " + req.URL);
 #endif
-                        req.SendRequest();
-
+                            req.SendRequest();
+                        }
 
                     }
                     catch (System.Exception e)
@@ -286,17 +290,24 @@ namespace BoardApplication
         {
             motorDriverL298.SetSpeed(MotorDriverL298.Motor.Motor1, -0.5);
         }
-
+        public Button Auto_heating;
+        public Button Auto_light;
         private void setupCallbackManiMenu(GHI.Glide.Display.Window Main_menu)
         {
-            Button Set_heating = (Button)Main_menu.GetChildByName("Set_heating");
+            /*Button Set_heating = (Button)Main_menu.GetChildByName("Set_heating");
             Set_heating.TapEvent += TempTap;
 
             Button Set_light = (Button)Main_menu.GetChildByName("Set_light");
-            Set_light.TapEvent += LumTap;
+            Set_light.TapEvent += LumTap;*/
 
             Button Up_motor = (Button)Main_menu.GetChildByName("Up_motor");
             Button Down_motor = (Button)Main_menu.GetChildByName("Down_motor");
+
+            Auto_heating = (Button)Main_menu.GetChildByName("Auto_heating");
+            Auto_light = (Button)Main_menu.GetChildByName("Auto_light");
+
+            Auto_heating.PressEvent += Auto_heating_PressEvent;
+            Auto_light.PressEvent += Auto_light_PressEvent;
 
             Up_motor.PressEvent += Up_motor_PressEvent;
             Up_motor.ReleaseEvent += Up_motor_ReleaseEvent;
@@ -315,6 +326,27 @@ namespace BoardApplication
             presenceText = (TextBox)Main_menu.GetChildByName("Presence_box");
             temperatureText = (TextBox)Main_menu.GetChildByName("Temperature_box");
 
+        }
+
+        void Auto_light_PressEvent(object sender)
+        {
+            status.AutomaticLightMangement = !status.AutomaticLightMangement;
+            
+        }
+
+        void Auto_heating_PressEvent(object sender)
+        {
+            status.AutomaticHeatherMangement = !status.AutomaticHeatherMangement;
+            String text="";
+            if (status.AutomaticHeatherMangement)
+            {
+                text = "Manual";
+            }
+            else {
+                text = "Auto";
+            }
+            ((Button)sender).Text = text;
+            ((Button)sender).Invalidate();
         }
 
         void heatingOnTap(object sender)
@@ -367,7 +399,7 @@ namespace BoardApplication
             this.setupCallbackManiMenu(Main_menu);
         }
 
-        private void TempTap(object sender)
+        /*private void TempTap(object sender)
         {
 
             GHI.Glide.Display.Window SUB_TEMPERATURE_MENU = GlideLoader.LoadWindow(Resources.GetString(Resources.StringResources.SUB_TEMPERATURE_MENU));
@@ -382,6 +414,6 @@ namespace BoardApplication
             Glide.MainWindow = SUB_LUMINOSITY_MENU;
             Button Main_light = (Button)SUB_LUMINOSITY_MENU.GetChildByName("Main_light");
             Main_light.TapEvent += MenuTap;
-        }
+        }*/
     }
 }

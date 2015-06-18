@@ -77,7 +77,7 @@ namespace Gadgeteer.Modules.Polito
                 presence = true;
                 this.OnPresenceEvent(this, presence);
             }*/
-            lastTime = System.DateTime.Now;
+            //lastTime = System.DateTime.Now;
             
         }
 
@@ -224,7 +224,9 @@ namespace Gadgeteer.Modules.Polito
             {
                 this.onSomeoneDetected = new PresenceSensorEventHandler(OnPresenceEvent);
             }
+           // Debug.Print("before check and invoke");
             if (Program.CheckAndInvoke(SomeoneDetected, onSomeoneDetected, sender, pres)) {
+             //   Debug.Print("in it");
                 this.SomeoneDetected(sender, pres);
             }
             
@@ -233,7 +235,8 @@ namespace Gadgeteer.Modules.Polito
 
         private void monitoringLastTime() {
             TimeSpan tenSecs = new TimeSpan(0, 0, 10);
-            Thread.Sleep(7000);
+            Thread.Sleep(10000);
+            this.input.Interrupt += (this._input_Interrupt);
             while (true) {
 
                 Thread.Sleep(100);

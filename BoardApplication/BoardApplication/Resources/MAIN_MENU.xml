@@ -11,12 +11,10 @@
     <TextBox Name="instance19738" X="109" Y="70" Width="104" Height="35" Alpha="255" Text="Light" TextAlign="center" Font="5" FontColor="000000"/>
     <Button Name="On_heating" X="3" Y="110" Width="52" Height="35" Alpha="255" Text="On" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
     <Button Name="Off_heating" X="56" Y="110" Width="52" Height="35" Alpha="255" Text="Off" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
-    <Button Name="Auto_heating" X="3" Y="150" Width="104" Height="35" Alpha="255" Text="Auto" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
-    <Button Name="Set_heating" X="3" Y="190" Width="104" Height="35" Alpha="255" Text="Set" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
+    <Button Name="Auto_heating" X="3" Y="150" Width="104" Height="35" Alpha="255" Text="Manual" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
     <Button Name="On_light" X="109" Y="110" Width="52" Height="35" Alpha="255" Text="On" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
     <Button Name="Off_light" X="162" Y="110" Width="52" Height="35" Alpha="255" Text="Off" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
-    <Button Name="Auto_light" X="109" Y="150" Width="104" Height="35" Alpha="255" Text="Auto" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
-    <Button Name="Set_light" X="109" Y="190" Width="104" Height="35" Alpha="255" Text="Set" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
+    <Button Name="Auto_light" X="109" Y="150" Width="104" Height="35" Alpha="255" Text="Manual" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
     <Button Name="Up_motor" X="215" Y="110" Width="104" Height="54" Alpha="255" Text="Up" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
     <Button Name="Down_motor" X="215" Y="172" Width="104" Height="54" Alpha="255" Text="Down" Font="4" FontColor="000000" DisabledFontColor="808080" TintColor="000000" TintAmount="0"/>
   </Window>

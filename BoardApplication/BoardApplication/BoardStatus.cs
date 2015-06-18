@@ -13,6 +13,17 @@ namespace BoardApplication
             get { return _automaticLightManagement; }
             set {
                 _automaticLightManagement = value;
+                String text = "";
+                if (_automaticLightManagement)
+                {
+                    text = "Manual";
+                }
+                else
+                {
+                    text = "Auto";
+                }
+                board.Auto_light.Text = text;
+                board.Auto_light.Invalidate();
                 if (value) {
                     Luminosity = Luminosity;
                 }
@@ -29,6 +40,17 @@ namespace BoardApplication
             set
             {
                 _automaticHeatherManagement = value;
+                String text = "";
+                if (_automaticHeatherManagement)
+                {
+                    text = "Manual";
+                }
+                else
+                {
+                    text = "Auto";
+                }
+                board.Auto_heating.Text = text;
+                board.Auto_heating.Invalidate();
                 if (value)
                 {
                     Temperature = Temperature;
@@ -82,7 +104,7 @@ namespace BoardApplication
             set{
                 _luminosity=value;
                 if (board.luminosityText != null) {
-                    board.luminosityText.Text = _luminosity.ToString();
+                    board.luminosityText.Text = (_luminosity < 1.0) ? "DARK" : (_luminosity < 2.0)?"MEDIUM":"HIGH";
                     board.luminosityText.Invalidate();
                 }
                 if (AutomaticLightMangement)
