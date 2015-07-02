@@ -164,8 +164,7 @@ namespace BoardApplication
 
                     try
                     {
-                        lock (this)
-                        {
+                       
                             string address = "http://" + hostRunningWCFService + "/domotic/insert/" + info.DataType;
 
                             POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
@@ -177,8 +176,10 @@ namespace BoardApplication
 #if DEBUG
                             Debug.Print("Sending request to " + req.URL);
 #endif
-                            req.SendRequest();
-                        }
+                            lock (this)
+                            {
+                                req.SendRequest();
+                            }
 
                     }
                     catch (System.Exception e)

@@ -5,7 +5,7 @@ namespace BoardApplication
 {
     public class BoardStatus
     {
-        private static double LUMINOSITY_THRESHOLD = 1.0;
+        private static double LUMINOSITY_THRESHOLD = 1.5;
         private static double TEMPERATURE_THRESHOLD = 18.0;
 
         private bool _automaticLightManagement=true;
@@ -104,7 +104,7 @@ namespace BoardApplication
             set{
                 _luminosity=value;
                 if (board.luminosityText != null) {
-                    board.luminosityText.Text = (_luminosity < 1.0) ? "DARK" : (_luminosity < 2.0)?"MEDIUM":"HIGH";
+                    board.luminosityText.Text = (_luminosity < 1.5) ? "DARK" : (_luminosity < 2.5)?"MEDIUM":"HIGH";
                     board.luminosityText.Invalidate();
                 }
                 if (AutomaticLightMangement)
