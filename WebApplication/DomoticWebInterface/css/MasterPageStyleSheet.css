@@ -1,0 +1,65 @@
+﻿html {
+    background-color: #808080;
+}
+
+.shadow {
+
+    -webkit-box-shadow: -15px 17px 45px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: -15px 17px 45px -2px rgba(0,0,0,0.75);
+box-shadow: -15px 17px 45px -2px rgba(0,0,0,0.75);
+
+
+}
+
+#wrapper {
+    
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url(../img/backgroundPS.gif);
+    background-repeat: repeat-x repeat-y;
+	
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    border: 3px solid #98c335;
+    border-radius: 20px;
+    overflow: hidden;
+    width:80%;
+    
+
+}
+
+#header {
+    background-color:rgba(59, 59, 59, 0.7);
+    /*height:500px;*/
+}
+
+#footer {
+    height: 5%;
+    background-color: rgba(59, 59, 59, 0.7);
+    text-align: center;
+}
+
+    #footer p {
+        color: #98c335;
+        font-size: 80%;
+    }
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
