@@ -141,11 +141,12 @@ namespace BoardApplication
                     board.presenceText.Text = _presence?"YES":"NO";
                     board.presenceText.Invalidate();
                 }
+                //Debug.Print("Auto:" + AutomaticLightMangement + "; presence: " + _presence + "; luminosity: "+_luminosity+"; lightOn: "+_lightOn);
                 if (AutomaticLightMangement)
                 {
-                    if (_luminosity < LUMINOSITY_THRESHOLD)
+                    if (_presence)
                     {
-                        if (_presence && !_lightOn)
+                        if (_luminosity < LUMINOSITY_THRESHOLD && !_lightOn)
                         {
                             board.turnOnLight();
 

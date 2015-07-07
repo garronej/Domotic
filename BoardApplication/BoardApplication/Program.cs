@@ -30,6 +30,7 @@ namespace BoardApplication
         private PresenceSensor presenceSensor = new PresenceSensor(5);
         private WebService ws;
         private BoardStatus status;
+        public Object lokcker = new Object();
         //private DisplayController display;
 
         public BoardStatus getStatus() {
@@ -164,22 +165,23 @@ namespace BoardApplication
 
                     try
                     {
-                       
-                            string address = "http://" + hostRunningWCFService + "/domotic/insert/" + info.DataType;
+                        
+                        string address = "http://" + hostRunningWCFService + "/domotic/insert/" + info.DataType;
 
-                            POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
+                        POSTContent content = Gadgeteer.Networking.POSTContent.CreateTextBasedContent(info.JSONValue);
 
-                            HttpRequest req =
-                                HttpHelper.CreateHttpPostRequest(address, content, "text/json");
-                            req.AddHeaderField("Content-Type", "text/json");
-                            req.ResponseReceived += req_ResponseReceived;
+                        HttpRequest req =
+                            HttpHelper.CreateHttpPostRequest(address, content, "text/json");
+                        req.AddHeaderField("Content-Type", "text/json");
+                        req.ResponseReceived += req_ResponseReceived;
 #if DEBUG
-                            Debug.Print("Sending request to " + req.URL);
+                        Debug.Print("Sending request to " + req.URL);
 #endif
-                            lock (this)
-                            {
-                                req.SendRequest();
-                            }
+
+                        lock (lokcker)
+                        {    
+                            req.SendRequest();
+                        }
 
                     }
                     catch (System.Exception e)

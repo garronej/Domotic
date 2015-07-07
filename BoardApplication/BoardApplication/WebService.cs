@@ -86,7 +86,7 @@ namespace BoardApplication
 
                     break;
                     default:
-                    lock (board)
+                    lock (board.lokcker)
                     {
                         responder.Respond(Encoding.UTF8.GetBytes("\"KO\""), "text/json");
                     }
